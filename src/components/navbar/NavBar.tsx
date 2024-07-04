@@ -1,12 +1,23 @@
-import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
+// import Container from "react-bootstrap/Container";
+import { UserOutlined } from "@ant-design/icons";
+import { Container, Dropdown, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import "../../styles/navbar.css";
 
+import { logOut } from "../../services/authentication";
+import { UserDetail } from "../../types/userDetail";
 import NavBarBottom from "./NavBarBottom";
 
-export default function NavBar() {
+interface NavBarProps {
+  userDetail: UserDetail | null;
+}
+const NavBar: React.FC<NavBarProps> = ({ userDetail }) => {
+  const handleLogout = () => {
+    logOut();
+    window.location.href = "/login";
+  };
+
   return (
     <div className="container-fluid nav-container">
       <Navbar className="bg-body-tertiary none-960">
@@ -51,9 +62,28 @@ export default function NavBar() {
                 </li>
                 <li className="vertical-line"></li>
                 <li className="nav-item item-navbar">
-                  <Link to="/login" className="text-navbar">
-                    Sign in
-                  </Link>
+                  {userDetail ? (
+                    <Dropdown>
+                      <Dropdown.Toggle variant="default" id="dropdown-basic">
+                        <UserOutlined style={{ marginRight: 5 }} />
+                        Hi, {userDetail.result.name}
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <Dropdown.Item href="#/profile">Profile</Dropdown.Item>
+                        <Dropdown.Item href="#/settings">
+                          Settings
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleLogout}>
+                          Logout
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  ) : (
+                    <Link to="/login" className="text-navbar">
+                      Sign in
+                    </Link>
+                  )}
                 </li>
               </ul>
             </div>
@@ -63,4 +93,5 @@ export default function NavBar() {
       <NavBarBottom />
     </div>
   );
-}
+};
+export default NavBar;

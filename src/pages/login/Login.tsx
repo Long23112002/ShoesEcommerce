@@ -1,10 +1,12 @@
-import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import { useNavigate } from "react-router-dom";
-import { OAuth2Config } from "../../configs/config-google";
+import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
-import { getToken, setToken } from "../../services/localStorageToken";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { OAuth2Config } from "../../configs/config-google";
+import { login } from "../../services/authentication";
+import { getToken, setToken } from "../../services/localStorageToken";
+import { validateFormLogin } from "../../utils/validateForm";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -33,15 +35,18 @@ export default function Login() {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    if (!validateForm()) return;
-    try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
 
-      const data = await response.json();
+    const { isValid, usernameError, passwordError } = validateFormLogin(
+      username,
+      password
+    );
+    setUsernameError(usernameError);
+    setPasswordError(passwordError);
+
+    if (!isValid) return;
+
+    try {
+      const data = await login(username, password);
 
       if (data.code === 0) {
         setToken(data.result?.token);
@@ -57,35 +62,6 @@ export default function Login() {
     }
   };
 
-
-  const validateForm = () => {
-    let isValid = true;
-
-    if (!username.trim()) {
-      setUsernameError("Username is required");
-      isValid = false;
-    } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-      setUsernameError(
-        "Username must be 3-20 characters and contain only letters, numbers, or underscores"
-      );
-      isValid = false;
-    } else {
-      setUsernameError("");
-    }
-
-    if (!password.trim()) {
-      setPasswordError("Password is required");
-      isValid = false;
-    } else if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters");
-      isValid = false;
-    } else {
-      setPasswordError("");
-    }
-
-    return isValid;
-  };
-
   useEffect(() => {
     const accessToken = getToken();
     if (accessToken) {
@@ -95,7 +71,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/nav");
+      navigate("/home");
     }
   }, [isLoggedIn, navigate]);
 
@@ -158,7 +134,9 @@ export default function Login() {
                 id=""
                 placeholder="Username"
               />
-               {usernameError && <div className="invalid-feedback">{usernameError}</div>} 
+              {usernameError && (
+                <div className="invalid-feedback">{usernameError}</div>
+              )}
             </div>
             <div className="mt-3 w-100">
               <input
@@ -169,7 +147,9 @@ export default function Login() {
                 id=""
                 placeholder="Password"
               />
-               {passwordError && <div className="invalid-feedback">{passwordError}</div>}
+              {passwordError && (
+                <div className="invalid-feedback">{passwordError}</div>
+              )}
             </div>
 
             <div className="mt-3 mb-3">

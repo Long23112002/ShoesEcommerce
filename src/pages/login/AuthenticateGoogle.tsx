@@ -33,7 +33,7 @@ export default function AuthenticateGoogle() {
 
   useEffect(() => {
     if (isLoggedin) {
-      navigate("/nav");
+      navigate("/login");
     }
   }, [isLoggedin, navigate]);
   return (
