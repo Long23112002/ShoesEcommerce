@@ -71,7 +71,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/home");
+      navigate("/");
     }
   }, [isLoggedIn, navigate]);
 

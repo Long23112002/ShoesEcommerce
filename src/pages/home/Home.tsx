@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NavBar from "../../components/navbar/NavBar";
 import { useNavigate } from "react-router-dom";
-import { UserDetail } from "../../types/userDetail";
 import { getUserDetail } from "../../services/authentication";
 import { getToken } from "../../services/localStorageToken";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../../redux/reducers/userDetailReducer";
+import { RootState } from "../../redux/store";
+import { UserDetail } from "../../types/userDetail";
 
 export default function Home() {
-  const [userDetail, setUserDetail] = useState<UserDetail | null>(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userDetail = useSelector<RootState>((state) => state.userDetail);
+
   useEffect(() => {
     const accessToken = getToken();
 
@@ -19,19 +25,18 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const data = await getUserDetail(accessToken);
-        setUserDetail(data);
+        dispatch(setUserDetails(data));
       } catch (error) {
         console.error("Error fetching user details:", error);
-        navigate("/login");
       }
     };
 
     fetchData();
-  }, [navigate]);
+  }, [dispatch, navigate]);
 
   return (
     <div>
-      <NavBar userDetail={userDetail} />
+      <NavBar userDetail={userDetail as UserDetail} />
     </div>
   );
 }
