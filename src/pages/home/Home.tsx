@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserDetail } from "../../types/userDetail";
 import { getUserDetail } from "../../services/authentication";
 import { getToken } from "../../services/localStorageToken";
+import { Content } from "../../components/content/Content";
 
 export default function Home() {
   const [userDetail, setUserDetail] = useState<UserDetail | null>(null);
@@ -32,6 +33,7 @@ export default function Home() {
   return (
     <div>
       <NavBar userDetail={userDetail} />
+      <Content/>
     </div>
   );
 }

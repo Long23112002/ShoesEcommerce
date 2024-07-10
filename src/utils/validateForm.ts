@@ -24,7 +24,7 @@ export const validateFormLogin = (
   if (!password.trim()) {
     passwordError = "Password is required";
     isValid = false;
-  } else if (password.length < 6) {
+  } else if (password.length < 3) {
     passwordError = "Password must be at least 6 characters";
     isValid = false;
   }

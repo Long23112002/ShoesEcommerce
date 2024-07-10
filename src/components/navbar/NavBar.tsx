@@ -91,6 +91,7 @@ const NavBar: React.FC<NavBarProps> = ({ userDetail }) => {
         </Container>
       </Navbar>
       <NavBarBottom />
+      
     </div>
   );
 };
