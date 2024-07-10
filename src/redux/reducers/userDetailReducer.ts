@@ -9,6 +9,7 @@ const initialState: UserDetail | null  = {
     gender: "",
     status: 0,
     address: "",
+    urlAvatar: "",
     roleNames: [],
   },
 };

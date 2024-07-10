@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import NavBar from "../../components/navbar/NavBar";
 import { RootState } from "../../redux/store";
-import avatarImage from "../../assets/images/avatar.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../../styles/profile.css";
 import imageProduct from "../../assets/images/air-force.png";
@@ -13,6 +12,7 @@ import breakpoints from "../../utils/breakPointsSwiper";
 
 export default function Profile() {
   const userDetail = useSelector((state: RootState) => state.userDetail);
+
   const products = [
     {
       id: 1,
@@ -59,7 +59,7 @@ export default function Profile() {
         <div className="row">
           <div className="col-12 d-flex align-items-center flex-column flex-md-row">
             <div className="avatar-container mb-3 mb-md-0">
-              <img className="image-rounder" src={avatarImage} alt="" />
+              <img className="image-rounder" src={userDetail.result.urlAvatar} alt="" />
             </div>
             <div className="ml-3 mx-3 text-center text-md-left">
               <span className="font-weight-bold fs-1 text-heading__responsive">

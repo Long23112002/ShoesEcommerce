@@ -6,6 +6,7 @@ export interface UserDetail {
       gender: string;
       status: number;
       address: string;
+      urlAvatar: string;
       roleNames: string[];
     };
   }

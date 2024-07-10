@@ -7,6 +7,7 @@ import "../../styles/navbar.css";
 import { logOut } from "../../services/authentication";
 import { UserDetail } from "../../types/userDetail";
 import NavBarBottom from "./NavBarBottom";
+import { persistor } from "../../redux/store";
 
 interface NavBarProps {
   userDetail: UserDetail | null;
@@ -14,6 +15,7 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({ userDetail }) => {
   const handleLogout = () => {
     logOut();
+    persistor.purge();
     window.location.href = "/login";
   };
 
