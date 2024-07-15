@@ -24,7 +24,6 @@ export default function AuthenticateGoogle() {
         })
         .then((data) => {
           console.log(data);
-
           setToken(data.result?.token);
           setIsLoggedin(true);
         });

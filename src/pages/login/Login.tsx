@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { OAuth2Config } from "../../configs/config-google";
+import { OAuth2Config, OAuth2ConfigFB } from "../../configs/config-google";
 import { login } from "../../services/authentication";
 import { getToken, setToken } from "../../services/localStorageToken";
 import { validateFormLogin } from "../../utils/validateForm";
+
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -25,6 +28,22 @@ export default function Login() {
     const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
       callbackUrl
     )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+
+    console.log(targetUrl);
+
+    window.location.href = targetUrl;
+  };
+
+  const handleContinueWithFacebook = () => {
+    const callbackUrl = OAuth2ConfigFB.redirectUri;
+    const authUrl = OAuth2ConfigFB.authUri;
+    const facebookClientId = OAuth2ConfigFB.clientId;
+    
+    const targetUrl = `${authUrl}?client_id=${facebookClientId}&redirect_uri=${encodeURIComponent(
+      callbackUrl
+    )}&state=${encodeURIComponent(
+      JSON.stringify({ callbackUrl })
+    )}&response_type=code&scope=email,public_profile`;
 
     console.log(targetUrl);
 
@@ -72,6 +91,7 @@ export default function Login() {
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/");
+      window.location.reload();
     }
   }, [isLoggedIn, navigate]);
 
@@ -182,12 +202,14 @@ export default function Login() {
             </div>
 
             <div className="w-100 mt-3">
-              <button type="submit" className="w-100 btn btn-outline-dark">
+            <div className="w-100 mt-3">
+              <button type="submit" className="w-100 btn btn-outline-dark" onClick={handleContinueWithFacebook}>
                 <FacebookIcon />
                 <span className="mx-2 mt-1 text-responsive">
                   Continue with Facebook
                 </span>
               </button>
+            </div>
             </div>
           </div>
         </div>

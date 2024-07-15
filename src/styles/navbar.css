@@ -37,6 +37,7 @@
   text-decoration: inherit;
 }
 
+
 .text-navbar-bottom {
   color: #333;
   text-decoration: none;
@@ -150,5 +151,9 @@
     }
     .text-responsive{
         font-size: 14px !important;
+    }
+
+    .input-search{
+      width: 55% !important;
     }
 }

@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { setUserDetails } from "../../redux/reducers/userDetailReducer";
 import { RootState } from "../../redux/store";
 import { UserDetail } from "../../types/userDetail";
+import quangCao from '../../assets/videos/quangcao.mp4';
+import '../../styles/home.css'
 
 export default function Home() {
   const navigate = useNavigate();
@@ -37,6 +39,14 @@ export default function Home() {
   return (
     <div>
       <NavBar userDetail={userDetail as UserDetail} />
+      <div className="container">
+      <div className="video-container">
+        <video className="video-player"  autoPlay muted loop>
+          <source src={quangCao} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      </div>
     </div>
   );
 }
