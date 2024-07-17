@@ -1,3 +1,5 @@
+import {UserCreate} from "../types/userCreate.ts";
+
 interface ValidateLoginResult {
   isValid: boolean;
   usernameError: string;
@@ -30,4 +32,49 @@ export const validateFormLogin = (
   }
 
   return { isValid, usernameError, passwordError };
+};
+
+
+export const validateForm = (userCreateData: UserCreate, confirmPassword: string) => {
+  let valid = true;
+  const newErrors = { fullName: '', username: '', password: '', confirmPassword: '', address: '' };
+
+  if (!userCreateData.name.trim()) {
+    newErrors.fullName = 'Full name is required';
+    valid = false;
+  } else if (userCreateData.name.length < 6) {
+    newErrors.fullName = 'Full name must be at least 6 characters';
+    valid = false;
+  }
+
+  if (!userCreateData.username.trim()) {
+    newErrors.username = 'Username is required';
+    valid = false;
+  } else if (userCreateData.username.length < 6) {
+    newErrors.username = 'Username must be at least 6 characters';
+    valid = false;
+  }
+
+  if (!userCreateData.password.trim()) {
+    newErrors.password = 'Password is required';
+    valid = false;
+  } else if (userCreateData.password.length < 6) {
+    newErrors.password = 'Password must be at least 6 characters';
+    valid = false;
+  }
+
+  if (userCreateData.password !== confirmPassword) {
+    newErrors.confirmPassword = 'Passwords do not match';
+    valid = false;
+  }
+
+  if (!userCreateData.address.trim()) {
+    newErrors.address = 'Address is required';
+    valid = false;
+  } else if (userCreateData.address.length < 6) {
+    newErrors.address = 'Address must be at least 6 characters';
+    valid = false;
+  }
+
+  return { valid, errors: newErrors };
 };

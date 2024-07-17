@@ -5,6 +5,7 @@ import Home from "../pages/home/Home";
 import Profile from "../pages/profile/Profile";
 import AuthenticateFacebook from "../pages/login/AuthenticateFacebook";
 import Cart from "../pages/cart/Cart";
+import Register from "../pages/login/Register.tsx";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
           <Route path="/" element={<Home/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );

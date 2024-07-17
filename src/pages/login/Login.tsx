@@ -2,7 +2,7 @@
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import { OAuth2Config, OAuth2ConfigFB } from "../../configs/config-google";
 import { login } from "../../services/authentication";
@@ -38,7 +38,7 @@ export default function Login() {
     const callbackUrl = OAuth2ConfigFB.redirectUri;
     const authUrl = OAuth2ConfigFB.authUri;
     const facebookClientId = OAuth2ConfigFB.clientId;
-    
+
     const targetUrl = `${authUrl}?client_id=${facebookClientId}&redirect_uri=${encodeURIComponent(
       callbackUrl
     )}&state=${encodeURIComponent(
@@ -139,7 +139,7 @@ export default function Login() {
 
         <div className="col-12 d-flex justify-content-center  mt-3 mb-3">
           <span className="text-login" style={{ fontSize: 28 }}>
-            Enter your username to join us or singin .
+            Enter your username to join us or signin.
           </span>
         </div>
 
@@ -173,8 +173,21 @@ export default function Login() {
             </div>
 
             <div className="mt-3 mb-3">
-              <input type="checkbox" /> <label>Remember me</label>
+              <input type="checkbox"/> <label>Remember me</label>
+              <span>
+                <Link  to ="/forgot-password" className="float-end text-dark fw-bold">
+                  Forgot password?
+                </Link>
+              </span>
             </div>
+
+            <div className="d-flex justify-content-center">
+                <span>
+                    Don't have an account? <Link to="/register" className="text-dark fw-bold">Register</Link>
+                </span>
+            </div>
+
+
 
             <span className="text-red">{errorLogin}</span>
 
